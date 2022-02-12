@@ -7,7 +7,7 @@ spoofedHttpbin = [[{
     "Accept-Encoding": "gzip, deflate", 
     "Cache-Control": "no-cache", 
     "Host": "httpbin.org", 
-    "Playercount": "1", 
+    "Playercount": "]]..#game.Players:GetPlayers()..[[", 
     "Requester": "Client", 
     "Roblox-Game-Id": "]]..game.JobId..[[", 
     "Roblox-Place-Id": "]]..game.PlaceId..[[",
