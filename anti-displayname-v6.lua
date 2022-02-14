@@ -183,7 +183,7 @@ task.spawn(function()
     end
 
     local function UpdateName(Player, Preferences)
-        --assert(typeof(Player) == 'Instance', 'bad argument #1; Instance expected, got '..tostring(typeof(Player))) --removed
+        assert(typeof(Player) == 'Instance', 'bad argument #1; Instance expected, got '..tostring(typeof(Player)))
         assert(Player:IsA('Player') == true, 'bad argument #2; Object [Player] expected, got '..tostring(Player.Parent)..'.'..Player.ClassName)
         assert(type(Preferences) == 'table', 'bad argument #3; (Preferences [table] expected, got '..tostring(type(Preferences))..')')
         
@@ -421,13 +421,13 @@ end
     local UI_Players = FindChildByOrder(game:GetService('CoreGui'), {'PlayerList', 'PlayerListMaster', 'OffsetFrame', 'PlayerScrollList', 'SizeOffsetFrame', 'ScrollingFrameContainer', 'ScrollingFrameClippingFrame', 'ScollingFrame', 'OffsetUndoFrame'}, true)
     if UI_Players then
         local ChildAdded = UI_Players.ChildAdded:Connect(function(Path)
-            local TP = PlayerFromUserId(0 + Path.Name:match('%d+'))
+            local Player = PlayerFromUserId(0 + Path.Name:match('%d+'))
             task.wait()
-            UpdateName(TP, Preferences)
+            if Player ~= nil then -- // script makes error for having team leaderboard
+                UpdateName(Player, Preferences)
+            end
         end)
     end
-                        
-                
 
     local PlayerAdded = Players.PlayerAdded:Connect(function(Player)
         task.wait(.2)
