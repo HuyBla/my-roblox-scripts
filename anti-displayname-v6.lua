@@ -1,5 +1,5 @@
 --[[
-Anti-DisplayName by m0thra, improved script by z O O r#1396
+Anti-DisplayName-v6 by m0thra, improved script by z O O r#1396
 My Discord: z O O r#1396
 ]]
 
@@ -183,7 +183,7 @@ task.spawn(function()
     end
 
     local function UpdateName(Player, Preferences)
-        assert(typeof(Player) == 'Instance', 'bad argument #1; Instance expected, got '..tostring(typeof(Player)))
+        --assert(typeof(Player) == 'Instance', 'bad argument #1; Instance expected, got '..tostring(typeof(Player))) --removed
         assert(Player:IsA('Player') == true, 'bad argument #2; Object [Player] expected, got '..tostring(Player.Parent)..'.'..Player.ClassName)
         assert(type(Preferences) == 'table', 'bad argument #3; (Preferences [table] expected, got '..tostring(type(Preferences))..')')
         
@@ -421,7 +421,7 @@ end
     local UI_Players = FindChildByOrder(game:GetService('CoreGui'), {'PlayerList', 'PlayerListMaster', 'OffsetFrame', 'PlayerScrollList', 'SizeOffsetFrame', 'ScrollingFrameContainer', 'ScrollingFrameClippingFrame', 'ScollingFrame', 'OffsetUndoFrame'}, true)
     if UI_Players then
         local ChildAdded = UI_Players.ChildAdded:Connect(function(Path)
-            local TP = PlayerFromUserId(0 + Path.Name:gsub('p_', ''))
+            local TP = PlayerFromUserId(0 + Path.Name:match('%d+'))
             task.wait()
             UpdateName(TP, Preferences)
         end)
