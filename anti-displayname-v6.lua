@@ -421,9 +421,11 @@ end
     local UI_Players = FindChildByOrder(game:GetService('CoreGui'), {'PlayerList', 'PlayerListMaster', 'OffsetFrame', 'PlayerScrollList', 'SizeOffsetFrame', 'ScrollingFrameContainer', 'ScrollingFrameClippingFrame', 'ScollingFrame', 'OffsetUndoFrame'}, true)
     if UI_Players then
         local ChildAdded = UI_Players.ChildAdded:Connect(function(Path)
-            local TP = PlayerFromUserId(0 + Path.Name:match('%d+'))
-            task.wait()
-            UpdateName(TP, Preferences)
+            if Path then -- // fix errors for saying instance
+                local TP = PlayerFromUserId(0 + Path.Name:match('%d+'))
+                task.wait()
+                UpdateName(TP, Preferences)
+            end
         end)
     end
                         
