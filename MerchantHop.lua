@@ -1,6 +1,6 @@
 getgenv().mode = 0
 if not getgenv().totalServers then
-	getgenv().totalServers = 0
+    getgenv().totalServers = 0
     getgenv().totalServersMerchant = 0
     getgenv().itemsBought = 0
 end
@@ -34,8 +34,7 @@ function Teleport()
     while wait() do
         pcall(function()
             searchForGame(gid, 0, math.random(50000, 60000))
-            end
-        end
+        end)
     end
 end
 
@@ -57,7 +56,7 @@ function useTeleport()
     console.newline()
     console.log('Teleporting To New Server')
     nextTeleport([[
-		getgenv().mode = ]]..mode..[[
+	getgenv().mode = ]]..mode..[[
         getgenv().totalServers = ]]..totalServers..[[
         getgenv().totalServersMerchant = ]]..totalServersMerchant..[[
         getgenv().itemsBought = ]]..itemsBought..[[
