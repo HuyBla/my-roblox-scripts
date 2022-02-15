@@ -56,11 +56,11 @@ function useTeleport()
     console.newline()
     console.log('Teleporting To New Server')
     nextTeleport([[
-		getgenv().mode = ]]..mode..[[
+	getgenv().mode = ]]..mode..[[
         getgenv().totalServers = ]]..totalServers..[[
         getgenv().totalServersMerchant = ]]..totalServersMerchant..[[
         getgenv().itemsBought = ]]..itemsBought..[[
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/4lve/Roblox/main/MerchantHop.lua"))()
+        loadstring(game:HttpGet("https://github.com/HuyBla/my-roblox-scripts/raw/main/MerchantHop.lua"))()
     ]])
     Teleport()
 end
