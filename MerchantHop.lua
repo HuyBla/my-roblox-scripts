@@ -1,4 +1,4 @@
-getgenv().mode = 0
+getgenv().mode = 1
 if not getgenv().totalServers then
 	getgenv().totalServers = 0
     getgenv().totalServersMerchant = 0
@@ -92,7 +92,7 @@ if (Lib.Network.Invoke("get merchant items")["Level 3"]) then
 			notOutOfStock = Lib.Network.Invoke("buy merchant item", 3)
 			if notOutOfStock then
 				console.newline()
-				console.formatcolors(" - &aMerchant Pet Bought")
+				console.formatcolors(" - &aMerchant Pet Bought Level 3")
 				getgenv().itemsBought = getgenv().itemsBought + 1
 			end
 		end
