@@ -32,7 +32,7 @@ spawn(function()
     function Teleport()
         while wait() do
             pcall(function()
-                searchForGame(gid, 0, math.random(50000, 60000))
+                searchForGame(gid, 0, math.random(50000, 58000))
             end)
         end
     end
