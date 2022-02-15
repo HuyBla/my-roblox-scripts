@@ -1,42 +1,42 @@
 getgenv().mode = 0
 if not getgenv().totalServers then
-    getgenv().totalServers = 0
+	getgenv().totalServers = 0
     getgenv().totalServersMerchant = 0
     getgenv().itemsBought = 0
 end
 
 spawn(function()
-local gid = game.PlaceId
-    function searchForGame(gid, min, max)
-        local page = math.round((max + min) / 2)
-        local GameInstances = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://www.roblox.com/games/getgameinstancesjson?placeId=" ..gid.. "&startindex=" ..page))
-        if #GameInstances["Collection"] < 11 and #GameInstances["Collection"] > 0 then
-            local server = GameInstances["Collection"][#GameInstances["Collection"] - 1]
+    local gid = game.PlaceId
+        function searchForGame(gid, min, max)
+            local page = math.round((max + min) / 2)
+            local GameInstances = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://www.roblox.com/games/getgameinstancesjson?placeId=" ..gid.. "&startindex=" ..page))
+            if #GameInstances["Collection"] < 11 and #GameInstances["Collection"] > 0 then
+                local server = GameInstances["Collection"][#GameInstances["Collection"] - 1]
+                pcall(function()
+                    game.StarterGui:SetCore("SendNotification", {Title = "Notification"; Text = 'Found Empty Servers: ' ..#server["CurrentPlayers"].. ', Ping: ' ..server["Ping"].. '\nTotal Servers: ' ..server['PlayersCapacity']})
+                    wait(0.45)
+                    return game:GetService("TeleportService"):TeleportToPlaceInstance(tonumber(game.PlaceId), server['Guid'])
+                end)
+            elseif (#GameInstances["Collection"] == 0) then
+                max = page
+                game.StarterGui:SetCore("SendNotification", {Title = "Notification"; Text = 'Page empty, trying new page: ' ..page})
+                wait(0.2)
+                searchForGame(gid, min, max)
+            else
+                min = page
+                game.StarterGui:SetCore("SendNotification", {Title = "Notification"; Text = 'Not empty, trying new servers: ' ..page})
+                wait(0.2)
+                searchForGame(gid, min, max)
+            end
+        end
+    function Teleport()
+        while wait() do
             pcall(function()
-                game.StarterGui:SetCore("SendNotification", {Title = "Notification"; Text = 'Found Empty Servers: ' ..#server["CurrentPlayers"].. ', Ping: ' ..server["Ping"].. '\nTotal Servers: ' ..server['PlayersCapacity']})
-                wait(0.45)
-                return game:GetService("TeleportService"):TeleportToPlaceInstance(tonumber(game.PlaceId), server['Guid'])
+                searchForGame(gid, 0, math.random(50000, 60000))
             end)
-        elseif (#GameInstances["Collection"] == 0) then
-            max = page
-            game.StarterGui:SetCore("SendNotification", {Title = "Notification"; Text = 'Page empty, trying new page: ' ..page})
-            wait(0.2)
-            searchForGame(gid, min, max)
-        else
-            min = page
-            game.StarterGui:SetCore("SendNotification", {Title = "Notification"; Text = 'Not empty, trying new servers: ' ..page})
-            wait(0.2)
-            searchForGame(gid, min, max)
         end
     end
 end)
-function Teleport()
-    while wait() do
-        pcall(function()
-            searchForGame(gid, 0, math.random(50000, 60000))
-        end)
-    end
-end
 
 if not game:IsLoaded() then
     game.Loaded:Wait()
@@ -56,11 +56,11 @@ function useTeleport()
     console.newline()
     console.log('Teleporting To New Server')
     nextTeleport([[
-	getgenv().mode = ]]..mode..[[
+		getgenv().mode = ]]..mode..[[
         getgenv().totalServers = ]]..totalServers..[[
         getgenv().totalServersMerchant = ]]..totalServersMerchant..[[
         getgenv().itemsBought = ]]..itemsBought..[[
-        loadstring(game:HttpGet("https://github.com/HuyBla/my-roblox-scripts/raw/main/MerchantHop.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/4lve/Roblox/main/MerchantHop.lua"))()
     ]])
     Teleport()
 end
