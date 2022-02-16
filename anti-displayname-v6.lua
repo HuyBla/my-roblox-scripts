@@ -416,14 +416,13 @@ task.spawn(function()
         end)
     end
 end
-        
 
     local UI_Players = FindChildByOrder(game:GetService('CoreGui'), {'PlayerList', 'PlayerListMaster', 'OffsetFrame', 'PlayerScrollList', 'SizeOffsetFrame', 'ScrollingFrameContainer', 'ScrollingFrameClippingFrame', 'ScollingFrame', 'OffsetUndoFrame'}, true)
     if UI_Players then
         local ChildAdded = UI_Players.ChildAdded:Connect(function(Path)
-            local Player = PlayerFromUserId(0 + Path.Name:match('%d+'))
-            task.wait()
-            if Player ~= nil then -- // script makes error for having team leaderboard
+            if Path.Name:match('^p_[%d+]') and Path.Name:match('%d+') then
+                local Player = PlayerFromUserId(0 + Path.Name:match('%d+'))
+                task.wait()
                 UpdateName(Player, Preferences)
             end
         end)
