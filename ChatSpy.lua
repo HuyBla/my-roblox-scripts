@@ -1,62 +1,100 @@
---This script reveals ALL hidden messages in the default chat
---chat "/spy" to toggle!
-enabled = true
---if true will check your messages too
-spyOnMyself = false
---if true will chat the logs publicly (fun, risky)
-public = false
---if true will use /me to stand out
-publicItalics = true
---customize private logs
-privateProperties = {
-	Color = Color3.fromRGB(0,255,255); 
-	Font = Enum.Font.SourceSansBold;
-	TextSize = 18;
-}
---////////////////////////////////////////////////////////////////
-local StarterGui = game:GetService("StarterGui")
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
-local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
-local instance = (_G.chatSpyInstance or 0) + 1
-_G.chatSpyInstance = instance
+-- // Initialise
+--if (getgenv().ChatSpy) then return getgenv().ChatSpy; end;
+repeat wait() until game:GetService("ContentProvider").RequestQueueSize == 0;
+repeat wait() until game:IsLoaded();
 
-local function onChatted(p,msg)
-	if _G.chatSpyInstance == instance then
-		if p==player and msg:lower():sub(1,4)=="/spy" then
-			enabled = not enabled
-			wait(0.3)
-			privateProperties.Text = "{SPY "..(enabled and "EN" or "DIS").."ABLED}"
-			StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-		elseif enabled and (spyOnMyself==true or p~=player) then
-			msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
-			local hidden = true
-			local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
-				if packet.SpeakerUserId==p.UserId and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
-					hidden = false
-				end
-			end)
-			wait(0.5)
-			conn:Disconnect()
-			if hidden and enabled then
-				if public then
-					saymsg:FireServer((publicItalics and "/me " or '').."{SPY} [".. p.Name .."]: "..msg,"All")
-				else
-					privateProperties.Text = "{SPY} [".. p.Name .."]: "..msg
-					StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-				end
-			end
-		end
-	end
-end
+-- // Vars
+local Players = game:GetService("Players");
+local StarterGui = game:GetService("StarterGui");
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local LocalPlayer = Players.LocalPlayer;
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui");
+local DefaultChatSystemChatEvents = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents");
+local SayMessageRequest = DefaultChatSystemChatEvents:WaitForChild("SayMessageRequest");
+local OnMessageDoneFiltering = DefaultChatSystemChatEvents:WaitForChild("OnMessageDoneFiltering");
+getgenv().ChatSpy = {
+    Enabled = true,
+    SpyOnSelf = false,
+    Public = false,
+    Chat = {
+        Color  = Color3.fromRGB(0, 255, 255),
+        Font = Enum.Font.SourceSansBold,
+        TextSize = 18,
+        Text = "",
+    },
+    IgnoreList = {
+        {Message = ":part/1/1/1", ExactMatch = true},
+        {Message = ":part/10/10/10", ExactMatch = true},
+        {Message = "A?????????", ExactMatch = false},
+        {Message = ":colorshifttop 10000 0 0", ExactMatch = true},
+        {Message = ":colorshiftbottom 10000 0 0", ExactMatch = true},
+        {Message = ":colorshifttop 0 10000 0", ExactMatch = true},
+        {Message = ":colorshiftbottom 0 10000 0", ExactMatch = true},
+        {Message = ":colorshifttop 0 0 10000", ExactMatch = true},
+        {Message = ":colorshiftbottom 0 0 10000", ExactMatch = true},
+    },
+};
 
-for _,p in ipairs(Players:GetPlayers()) do
-	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
-end
-Players.PlayerAdded:Connect(function(p)
-	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
-end)
-local chatFrame = player.PlayerGui.Chat.Frame
-chatFrame.ChatChannelParentFrame.Visible = true
-chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
+-- // Function
+function ChatSpy.checkIgnored(message)
+    for i = 1, #ChatSpy.IgnoreList do
+        local v = ChatSpy.IgnoreList[i];
+        if (v.ExactMatch and message == v.Message) or (not v.ExactMatch and string.match(v.Message, message)) then 
+            return true;
+        end;
+    end;
+    return false;
+end;
+
+function ChatSpy.onChatted(targetPlayer, message)
+    if (targetPlayer == LocalPlayer and string.lower(message):sub(1, 4) == "/spy") then
+        ChatSpy.Enabled = not ChatSpy.Enabled; wait(0.3);
+        ChatSpy.Chat.Text = "{SPY} - "..(ChatSpy.Enabled and "Enabled." or "Disabled.");
+
+        StarterGui:SetCore("ChatMakeSystemMessage", ChatSpy.Chat);
+    elseif (ChatSpy.Enabled and (ChatSpy.SpyOnSelf or targetPlayer ~= LocalPlayer)) then
+        local message = message:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ');
+
+        local Hidden = true;
+        local Connection = OnMessageDoneFiltering.OnClientEvent:Connect(function(packet, channel)
+            if (packet.SpeakerUserId == targetPlayer.UserId and packet.Message == message:sub(#message - #packet.Message + 1) and (channel == "All" or (channel == "Team" and not ChatSpy.Public and Players[packet.FromSpeaker].Team == LocalPlayer.Team))) then
+                Hidden = false;
+            end;
+        end);
+
+        wait(0.5);
+        Connection:Disconnect();
+
+        if (Hidden and ChatSpy.Enabled and not ChatSpy.checkIgnored(message)) then
+            if (#message > 1200) then
+                message = message:sub(1200) .. "...";
+            end;
+            ChatSpy.Chat.Text = "{SPY} ["..targetPlayer.Name.."]: " .. message;
+            if (ChatSpy.Public) then SayMessageRequest:FireServer(ChatSpy.Chat.Text, "All"); else StarterGui:SetCore("ChatMakeSystemMessage", ChatSpy.Chat); end;
+        end;
+    end;
+end;
+
+-- // Handling Chats
+local AllPlayers = Players:GetPlayers();
+for i = 1, #AllPlayers do
+    local player = AllPlayers[i];
+    player.Chatted:Connect(function(message)
+        ChatSpy.onChatted(player, message);
+    end);
+end;
+
+Players.PlayerAdded:Connect(function(player)
+    player.Chatted:Connect(function(message)
+        ChatSpy.onChatted(player, message);
+    end);
+end);
+
+-- // Initialise Text
+ChatSpy.Chat.Text = "{SPY} - "..(ChatSpy.Enabled and "Enabled." or "Disabled.");
+StarterGui:SetCore("ChatMakeSystemMessage", ChatSpy.Chat);
+
+-- // Update Chat Frame
+local chatFrame = LocalPlayer.PlayerGui.Chat.Frame;
+chatFrame.ChatChannelParentFrame.Visible = true;
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(), chatFrame.ChatChannelParentFrame.Size.Y);
