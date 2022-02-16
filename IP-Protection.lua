@@ -45,7 +45,7 @@ old = hookfunction(game.HttpGet, function(self, url)
 end)
 
 local oldSyn
-oldSyn = hookfunction((syn and syn.request or request),function(a,b)
+oldSyn = hookfunction((syn and syn.request or request or http and http_request or http.request),function(a,b)
     if type(a) == "string" then
         for i,v in pairs(a) do
             if i == "Url" and v:find("ipify") or v:find("ident") then
@@ -53,22 +53,6 @@ oldSyn = hookfunction((syn and syn.request or request),function(a,b)
                 return {
                     StatusCode = 200,
                     Body = spoofedIP
-                }
-            end
-        end
-    end
-    return oldSyn(a,b)
-end)
-
-local oldSyn
-oldSyn = hookfunction((syn and syn.request or request),function(a,b)
-    if type(a) == "string" then
-        for i,v in pairs(a) do
-            if i == "Url" and v:find("httpbin.org/get") then
-                warn(v,"tried to log your httpbin. It was protected.")
-                return {
-                    StatusCode = 200,
-                    Body = spoofedHttpbin
                 }
             end
         end
