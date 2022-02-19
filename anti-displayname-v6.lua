@@ -422,7 +422,7 @@ end
         local ChildAdded = UI_Players.ChildAdded:Connect(function(Path)
             if Path.Name:match('^p_[%d+]') and Path.Name:match('%d+') then
                 local Player = PlayerFromUserId(0 + Path.Name:match('%d+'))
-                task.wait()
+                task.wait(.2)
                 UpdateName(Player, Preferences)
             end
         end)
