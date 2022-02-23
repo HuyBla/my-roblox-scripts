@@ -3,10 +3,10 @@ firetouchinterest(game:GetService("Workspace").AREA51.M14["M14 Giver"]["PUT THE 
 
 wait(0.75)
 game:GetService("ReplicatedStorage")["Remote Functions"]["PAP Weapon"]:InvokeServer("RayGun")
-game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer("RayGun")
-wait(0.25)
+game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer()
+wait(0.15)
 game:GetService("ReplicatedStorage")["Remote Functions"]["PAP Weapon"]:InvokeServer("M14")
-game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer("RayGun")
+game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer()
 wait(0.75)
 
 function CountTable(q)
@@ -86,10 +86,10 @@ game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(ok)
 
     wait(0.75)
     game:GetService("ReplicatedStorage")["Remote Functions"]["PAP Weapon"]:InvokeServer("RayGun")
-    game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer("RayGun")
-    wait(0.25)
+    game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer()
+    wait(0.15)
     game:GetService("ReplicatedStorage")["Remote Functions"]["PAP Weapon"]:InvokeServer("M14")
-    game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer("RayGun")
+    game:GetService("ReplicatedStorage")["Remote Events"].PAPFinished:FireServer()
     wait(0.75)
 
     for i, v in pairs(getgc(true)) do --gun mods by c0n
