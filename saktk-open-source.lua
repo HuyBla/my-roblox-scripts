@@ -31,10 +31,8 @@ for t, u in pairs(getgc()) do --i stole xd
 	end
 end
 
-hookfunction(getconnections(game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() end)
-local Conn = game:GetService("RunService").Heartbeat:Connect(function()
-    game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30
-end)
+hookfunction(getconnections(game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30 end)
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30
 
 for i, v in pairs(getgc(true)) do --gun mods by c0n
     if type(v) == "table" and rawget(v, "ammo") then
@@ -75,12 +73,9 @@ old = hookmetamethod(game, "__namecall", function(fired, ...)
 end)
 
 game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(ok)
-    Conn:Disconnect()
     wait(0.75)
-    hookfunction(getconnections(ok.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() end)
-    game:GetService("RunService").Heartbeat:Connect(function()
-        ok.Humanoid.WalkSpeed = 30
-    end)
+    hookfunction(getconnections(ok.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() ok.Humanoid.WalkSpeed = 30 end)
+    game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30
     firetouchinterest(game:GetService("Workspace").AREA51.RayGun["RayGun Giver"]["PUT THE WEAPON IN THIS BRICK"], ok.HumanoidRootPart, 0)
     firetouchinterest(game:GetService("Workspace").AREA51.M14["M14 Giver"]["PUT THE WEAPON IN THIS BRICK"], ok.HumanoidRootPart, 0)
 
