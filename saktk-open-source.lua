@@ -31,8 +31,8 @@ for t, u in pairs(getgc()) do --i stole xd
 	end
 end
 
-hookfunction(getconnections(game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30 end)
-game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30
+hookfunction(getconnections(game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 25 end)
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 25
 
 for i, v in pairs(getgc(true)) do --gun mods by c0n
     if type(v) == "table" and rawget(v, "ammo") then
