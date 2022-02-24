@@ -75,7 +75,7 @@ end)
 game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(ok)
     wait(0.75)
     hookfunction(getconnections(ok.Humanoid:GetPropertyChangedSignal("WalkSpeed"))[1].Function, function() ok.Humanoid.WalkSpeed = 30 end)
-    game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 30
+    ok.Humanoid.WalkSpeed = 30
     firetouchinterest(game:GetService("Workspace").AREA51.RayGun["RayGun Giver"]["PUT THE WEAPON IN THIS BRICK"], ok.HumanoidRootPart, 0)
     firetouchinterest(game:GetService("Workspace").AREA51.M14["M14 Giver"]["PUT THE WEAPON IN THIS BRICK"], ok.HumanoidRootPart, 0)
 
