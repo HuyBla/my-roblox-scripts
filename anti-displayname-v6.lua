@@ -1,3 +1,4 @@
+-- // Note: Spoof LocalPlayer is Client-Side
 --[[
 Anti-DisplayName-v6 by m0thra, improved script by z O O r#1396
 My Discord: z O O r#1396
@@ -31,7 +32,7 @@ task.spawn(function()
         game:GetService('Players'):WaitForChild(game:GetService('Players').LocalPlayer.Name)
     end
 
-    local LP, Players, ValidStatuses, PlayerInfoPrefetch = game:GetService('Players').LocalPlayer, game:GetService('Players'), {Enum.FriendStatus.NotFriend, Enum.FriendStatus.Friend}, {
+    local LP, Players, ts, ValidStatuses, PlayerInfoPrefetch = game:GetService('Players').LocalPlayer, game:GetService('Players'), game:GetService("TextService"), {Enum.FriendStatus.NotFriend, Enum.FriendStatus.Friend}, {
         Friend = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '486, 213'},
         Blocked = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '194, 485'},
         Premium = {Image = 'rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/App/ImageSet/ImageAtlas/img_set_1x_2.png', Offset = '243, 485'},
@@ -194,7 +195,7 @@ task.spawn(function()
         local IdentifyBlocked = Check(Preferences, 'IdentifyBlocked')
         local IdentifyPremium = Check(Preferences, 'IdentifyPremium')
         local IdentifyDeveloper = Check(Preferences, 'IdentifyDeveloper')
-        local SpoofLocalPlayer = Check(Preferences, 'SpoofLocalPlayer')
+        local SpoofLocalPlayerCS = Check(Preferences, 'SpoofLocalPlayerCS')
         local Orientation = Check(Preferences, 'Orientation')
         
         if typeof(Player) == 'Instance' and Player:IsA('Player') then
@@ -399,12 +400,49 @@ task.spawn(function()
                         AppendCharacterName(TC, ''..Player.Name)
                     end
                 elseif Player == LP then
-                    if SpoofLocalPlayer.Toggle == true then
-                        if SpoofLocalPlayer.UseRandomName == true then
-                            UpdateLeaderboardName(LP, tostring(RandomGamertags[math.random(1, #RandomGamertags)]))
-                        elseif SpoofLocalPlayer.UseRandomName == false then
-                            UpdateLeaderboardName(LP, tostring(SpoofLocalPlayer.NewName))
+                    if SpoofLocalPlayerCS.Toggle == true then
+                        local function plrthing(obj, property)
+                            if SpoofLocalPlayerCS.Toggle == true then
+                                if SpoofLocalPlayerCS.UseChatWithNames == true then
+                                    obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName).. " ("..LP.Name.. ") ")
+                                elseif SpoofLocalPlayerCS.UseChatWithNames == false then
+                                    obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
+                                end
+                            end
                         end
+
+                        local OldNameCall
+                        OldNameCall = hookmetamethod(game, "__namecall", function(...)
+                            local Args = {...}
+                            local NamecallMethod = getnamecallmethod()
+
+                            if not checkcaller() and #Args >= 2 and Args[1] == ts and NamecallMethod == "GetTextSize" then
+                                if SpoofLocalPlayerCS.Toggle == true then
+                                    if SpoofLocalPlayerCS.UseChatWithNames == true then
+                                        Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName).. "("..LP.Name.. ")")
+                                    elseif SpoofLocalPlayerCS.UseChatWithNames == false then
+                                        Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
+                                    end
+                                end
+                            end
+
+                            return OldNameCall(unpack(Args))
+                        end)
+
+                        local function newobj(v)
+                            if v:IsA("TextLabel") or v:IsA("TextButton") then
+                                plrthing(v, "Text")
+                                v:GetPropertyChangedSignal("Text"):connect(function()
+                                    plrthing(v, "Text")
+                                end)
+                            end
+                        end
+
+                        for i,v in pairs(game:GetDescendants()) do
+                            newobj(v)
+                        end
+
+                        game.DescendantAdded:connect(newobj)
                     else
                         UpdateLeaderboardName(Player, Player.DisplayName)
                     end
