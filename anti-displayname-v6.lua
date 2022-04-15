@@ -402,7 +402,7 @@ task.spawn(function()
                         local function plrthing(obj, property)
                             if SpoofLocalPlayerCS.Toggle == true then
                                 if SpoofLocalPlayerCS.UseChatWithNames == true then
-                                    obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName).. " ("..LP.Name.. ") ")
+                                    obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName).. " ("..LP.Name.. ")")
                                 elseif SpoofLocalPlayerCS.UseChatWithNames == false then
                                     obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
                                 end
