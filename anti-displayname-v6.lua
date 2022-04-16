@@ -1,4 +1,4 @@
--- // Note: Spoof LocalPlayer is Client-Side
+-- // Note: CS = Client Side
 --[[
 Anti-DisplayName-v6 by m0thra, improved script by z O O r#1396
 My Discord: z O O r#1396
@@ -400,13 +400,7 @@ task.spawn(function()
                 elseif Player == LP then
                     if SpoofLocalPlayerCS.Toggle == true then
                         local function plrthing(obj, property)
-                            if SpoofLocalPlayerCS.Toggle == true then
-                                if SpoofLocalPlayerCS.UseChatWithNames == true then
-                                    obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName).. " ("..LP.Name.. ")")
-                                elseif SpoofLocalPlayerCS.UseChatWithNames == false then
-                                    obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
-                                end
-                            end
+                            obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
                         end
 
                         local OldNameCall
@@ -415,13 +409,7 @@ task.spawn(function()
                             local NamecallMethod = getnamecallmethod()
 
                             if not checkcaller() and #Args >= 2 and Args[1] == ts and NamecallMethod == "GetTextSize" then
-                                if SpoofLocalPlayerCS.Toggle == true then
-                                    if SpoofLocalPlayerCS.UseChatWithNames == true then
-                                        Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName).. "("..LP.Name.. ")")
-                                    elseif SpoofLocalPlayerCS.UseChatWithNames == false then
-                                        Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
-                                    end
-                                end
+                                Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
                             end
 
                             return OldNameCall(unpack(Args))
