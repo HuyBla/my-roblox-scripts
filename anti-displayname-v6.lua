@@ -1,4 +1,4 @@
--- // Note: CS = Client Side
+-- // Note: Spoof LocalPlayer = Client-Side
 --[[
 Anti-DisplayName-v6 by m0thra, improved script by z O O r#1396
 My Discord: z O O r#1396
