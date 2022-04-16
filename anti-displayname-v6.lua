@@ -201,7 +201,42 @@ task.spawn(function()
             
         pcall(function()
             if RetroNaming == false then
-                if Player ~= LP then
+                if Player == LP then
+                    if SpoofLocalPlayerCS.Toggle == true then
+                        local function plrthing(obj, property)
+                            obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
+                        end
+
+                        local OldNameCall
+                        OldNameCall = hookmetamethod(game, "__namecall", function(...)
+                            local Args = {...}
+                            local NamecallMethod = getnamecallmethod()
+
+                            if not checkcaller() and #Args >= 2 and Args[1] == ts and NamecallMethod == "GetTextSize" then
+                                Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
+                            end
+
+                            return OldNameCall(unpack(Args))
+                        end)
+
+                        local function newobj(v)
+                            if v:IsA("TextLabel") or v:IsA("TextButton") then
+                                plrthing(v, "Text")
+                                v:GetPropertyChangedSignal("Text"):connect(function()
+                                    plrthing(v, "Text")
+                                end)
+                            end
+                        end
+
+                        for i,v in pairs(game:GetDescendants()) do
+                            newobj(v)
+                        end
+
+                        game.DescendantAdded:connect(newobj)
+                    else
+                        UpdateLeaderboardName(Player, Player.DisplayName)
+                    end
+                elseif Player ~= LP then
                     if IdentifyFriends.Toggle == true and GetPlayerInfo(Player) == 'IsFriend' then
                         if Orientation == 'Vertical' then
                             if ApplyToLeaderboard == true and Pl.Name ~= Pl.DisplayName then
@@ -396,41 +431,6 @@ task.spawn(function()
                         end
                         
                         AppendCharacterName(TC, ''..Player.Name)
-                    end
-                elseif Player == LP then
-                    if SpoofLocalPlayerCS.Toggle == true then
-                        local function plrthing(obj, property)
-                            obj[property] = obj[property]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
-                        end
-
-                        local OldNameCall
-                        OldNameCall = hookmetamethod(game, "__namecall", function(...)
-                            local Args = {...}
-                            local NamecallMethod = getnamecallmethod()
-
-                            if not checkcaller() and #Args >= 2 and Args[1] == ts and NamecallMethod == "GetTextSize" then
-                                Args[2] = Args[2]:gsub(LP.DisplayName, tostring(SpoofLocalPlayerCS.NewName))
-                            end
-
-                            return OldNameCall(unpack(Args))
-                        end)
-
-                        local function newobj(v)
-                            if v:IsA("TextLabel") or v:IsA("TextButton") then
-                                plrthing(v, "Text")
-                                v:GetPropertyChangedSignal("Text"):connect(function()
-                                    plrthing(v, "Text")
-                                end)
-                            end
-                        end
-
-                        for i,v in pairs(game:GetDescendants()) do
-                            newobj(v)
-                        end
-
-                        game.DescendantAdded:connect(newobj)
-                    else
-                        UpdateLeaderboardName(Player, Player.DisplayName)
                     end
                 end
             elseif RetroNaming == true then
