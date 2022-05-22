@@ -4271,6 +4271,28 @@ spawn(function()
 end)
 
 spawn(function()
+    game:GetService("RunService").Stepped:Connect(function()
+        pcall(function()
+            if Usefastattack or SuperFastAttack then
+                if fastattect then
+                    CombatFrameworkR.activeController:attack()
+                end
+            end
+        end)
+    end)
+end)
+spawn(function()
+    while wait() do
+        pcall(function()
+            if Usefastattack or SuperFastAttack then
+                if fastattect then
+                    CombatFrameworkR.activeController:attack()
+                end
+            end
+        end)
+    end
+end)
+spawn(function()
     while wait() do
         pcall(function()
             if Usefastattack or SuperFastAttack then
@@ -4390,6 +4412,7 @@ spawn(function()
         end)
     end
 end)
+
 local Main = library:Window("Ren","Blox Fruit 17.07")
 local AutoFarmTab = Main:Tab("Auto Farm")
 local MainAutoFarmFunction = AutoFarm(Ms,NameQuest,LevelQuest,NameMon,CFrameMon,CFrameQuest,"AutoFarmLevel")
