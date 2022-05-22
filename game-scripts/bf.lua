@@ -3684,6 +3684,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                     if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                         Usefastattack = false
                         StartMagnetAutoFarmLevel= false
+			game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                         Questtween = toTarget(NPCQuestCFrame.Position,NPCQuestCFrame) wait(.1)
                         if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                             if Questtween then Questtween:Stop() end wait(.5)
@@ -3723,6 +3724,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                                 PosMon = v.HumanoidRootPart.CFrame
                                                 StartMagnetAutoFarmLevel= true
                                                 Usefastattack = true
+						game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
                                                 if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
                                                     local args = {
                                                         [1] = "Buso"
@@ -3743,6 +3745,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                         end
                                         Usefastattack = false
                                         StartMagnetAutoFarmLevel= false
+					game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                                     else
                                         game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("AbandonQuest");
                                     end 
@@ -3754,6 +3757,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                             end
                             Usefastattack = false
                             StartMagnetAutoFarmLevel= false
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                             Modstween = toTarget(CFrameMon.Position,CFrameMon)
                             if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                                 if Modstween then Modstween:Stop() end wait(.5)
@@ -3883,6 +3887,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                     if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                         Usefastattack = false
                         StartMagnetAutoFarmLevel= false
+			game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                         Questtween = toTarget(NPCQuestCFrame.Position,NPCQuestCFrame) wait(.1)
                         if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                             if Questtween then Questtween:Stop() end wait(.5)
@@ -3920,6 +3925,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                                 if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude <= 350 then
                                                     if Farmtween then Farmtween:Stop() end
                                                     StartMagnetAutoFarmLevel= true
+                                                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
                                                     if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
                                                         local args = {
                                                             [1] = "Buso"
@@ -4005,6 +4011,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                                     game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("AbandonQuest");
                                                 end
                                                 StartMagnetAutoFarmLevel= false
+						game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                                                 Modstween = toTarget(CFrameMon.Position,CFrameMon)
                                                 if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                                                     if Modstween then Modstween:Stop() end wait(.5)
@@ -4028,6 +4035,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                             game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("AbandonQuest");
                                         end
                                         StartMagnetAutoFarmLevel= false
+					game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                                     else
                                         game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("AbandonQuest");
                                     end 
@@ -4038,6 +4046,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                 game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("AbandonQuest");
                             end
                             StartMagnetAutoFarmLevel= false
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                             Modstween = toTarget(CFrameMon.Position,CFrameMon)
                             if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                                 if Modstween then Modstween:Stop() end wait(.5)
@@ -4061,6 +4070,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                     if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                         Usefastattack = false
                         StartMagnetAutoFarmLevel= false
+			game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false		
                         Questtween = toTarget(NPCQuestCFrame.Position,NPCQuestCFrame) wait(.1)
                         if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                             if Questtween then Questtween:Stop() end wait(.5)
@@ -4098,6 +4108,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                                 if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude <= 350 then
                                                     if Farmtween then Farmtween:Stop() end
                                                     StartMagnetAutoFarmLevel= true
+                                                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
                                                     if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
                                                         local args = {
                                                             [1] = "Buso"
@@ -4133,6 +4144,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                                 end
                                                 Usefastattack = false
                                                 StartMagnetAutoFarmLevel= false
+						game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false				
                                                 Modstween = toTarget(CFrameMon.Position,CFrameMon)
                                                 if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                                                     if Modstween then Modstween:Stop() end wait(.5)
@@ -4157,6 +4169,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                                         end
                                         StartMagnetAutoFarmLevel= false
                                         Usefastattack = false
+					game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                                     else
                                         game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("AbandonQuest");
                                     end 
@@ -4168,6 +4181,7 @@ function AutoFarm(NameMonster,RemoteQuestGet,LevelQuestGet,TextQuestName,WaitMon
                             end
                             Usefastattack = false
                             StartMagnetAutoFarmLevel= false
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
                             Modstween = toTarget(CFrameMon.Position,CFrameMon)
                             if OldWorld and (Ms == "Fishman Commando [Lv. 400]" or Ms == "Fishman Warrior [Lv. 375]") and (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).magnitude > 50000 then
                                 if Modstween then Modstween:Stop() end wait(.5)
