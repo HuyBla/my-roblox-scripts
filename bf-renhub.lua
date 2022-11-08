@@ -4399,7 +4399,7 @@ AutoFarmTab:Toggle("Super Fast Attack (with No Attack Animation)", false,functio
     SuperFastAttack = value
     task.spawn(function()
         repeat task.wait()
-            pcall(FastAttackFunction, .01)
+            pcall(FastAttackFunction, .02)
         until not SuperFastAttack
     end)
 end)
@@ -8383,9 +8383,19 @@ AutoFarmMiscTab:Toggle("Auto Holy Torch",_G.AutoHolyTorch,function(v)
 end)
 -- Auto Fram Elite Hunter
 local CheckEliteHunter = AutoFarmMiscTab:Label("N/S")
+local CheckSpawnEliteHunter = AutoFarmMiscTab:Label("N/S")
 task.spawn(function()
     while task.wait(1) do
         CheckEliteHunter:Refresh("Kill " .. game.ReplicatedStorage.Remotes.CommF_:InvokeServer("EliteHunter", "Progress") .. " Elite Enemies")
+        pcall(function()
+            for i,v in pairs(game.ReplicatedStorage:GetChildren()) do
+                if string.find(v.Name,"Diablo") ~= nil or string.find(v.Name,"Urban") ~= nil or string.find(v.Name,"Deandre") ~= nil then
+                    CheckSpawnEliteHunter:Refresh("Elite Enemies: " ..v.Name)
+                else
+                    CheckSpawnEliteHunter:Refresh("Elite Enemies: None")
+                end
+            end
+        end)
     end
 end)
 AutoFarmMiscTab:Toggle("Auto Elite Hunter",_G.AutoEliteHunter,function(a)
@@ -8491,6 +8501,10 @@ AutoFarmMiscTab:Toggle("Auto Elite Hunter",_G.AutoEliteHunter,function(a)
                                 end
                             end
                         end
+                    else
+                        local string_1 = "EliteHunter";
+                        local Target = game:GetService("ReplicatedStorage").Remotes["CommF_"];
+                        Target:InvokeServer(string_1);
                     end
                 end
             until not AutoEliteHunter
